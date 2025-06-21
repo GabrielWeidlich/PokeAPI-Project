@@ -34,13 +34,13 @@ export class Tab1Page implements OnInit {
       next: (response) => { 
         this.pokemons = this.pokemons.concat(response.results);
         this.offset += this.limit;
-        if (event) {
-          event.detail.complete(); 
+        if (event && event.detail && typeof event.detail.complete === 'function') {
+          event.detail.complete();
         }
       },
       error: (error) => { 
         console.error('Erro ao carregar Pokémons:', error);
-        if (event) {
+        if (event && event.detail && typeof event.detail.complete === 'function') {
           event.detail.complete();
         }
       }

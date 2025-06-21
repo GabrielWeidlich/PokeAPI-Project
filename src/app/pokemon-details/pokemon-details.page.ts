@@ -32,31 +32,35 @@ export class PokemonDetailsPage implements OnInit {
 
   ngOnInit() {
     this.route.paramMap.subscribe(async params => {
-      this.pokemonName = params.get('name');
+      this.pokemonName = params.get('pokemonName');
       if (this.pokemonName) {
         this.loadPokemonDetails(this.pokemonName);
         this.isPokemonFavorite = await this.favoriteService.isFavorite(this.pokemonName);
+      } else {
       }
     })
   }
 
   loadPokemonDetails(name: string) {
-    this.pokemonService.getPokemonsDetails(name).subscribe({
+    this.pokemonService.getPokemonDetails(name).subscribe({ 
       next: (data) => {
         this.pokemon = data;
         this.extractAdditionalInfo(data);
         this.extractSprites(data.sprites);
       },
       error: (error) => {
-        console.error('Erro ao carregar detalhes do Pokémon:', error);
+        console.error('PokemonDetailsPage: Erro ao carregar detalhes do Pokémon:', error); 
+      },
+      complete: () => {
+        console.log('PokemonDetailsPage: Requisição de detalhes concluída.'); 
       }
     })
   }
 
   extractAdditionalInfo(data: any) {
     this.additionalInfo = [
-      { label: 'Height', value: data.height },
-      { label: 'Weight', value: data.weight },
+      { label: 'Height', value: `${data.height / 10} m` }, 
+      { label: 'Weight', value: `${data.weight / 10} kg` },   
       { label: 'Base Experience', value: data.base_experience },
       { label: 'Abilities', value: data.abilities.map((ability: any) => ability.ability.name).join(', ') },
       { label: 'Types', value: data.types.map((type: any) => type.type.name).join(', ') }
@@ -68,6 +72,10 @@ export class PokemonDetailsPage implements OnInit {
     if (sprites.back_default) this.sprites.push(sprites.back_default);
     if (sprites.front_shiny) this.sprites.push(sprites.front_shiny);
     if (sprites.back_shiny) this.sprites.push(sprites.back_shiny);
+
+    if (sprites.other && sprites.other['official-artwork'] && sprites.other['official-artwork'].front_default) {
+      this.sprites.push(sprites.other['official-artwork'].front_default);
+    }
   }
 
   async toggleFavorite() {
@@ -76,15 +84,15 @@ export class PokemonDetailsPage implements OnInit {
         await this.favoriteService.removeFavorite(this.pokemon.name);
       } else {
         await this.favoriteService.addFavorite({
-          name: this.pokemon,
-          url: 'https://pokeapi.co/api/v2/pokemon/' + this.pokemon.id
+          name: this.pokemon.name, 
+          url: `https://pokeapi.co/api/v2/pokemon/${this.pokemon.id}/`
         });
       }
       this.isPokemonFavorite = !this.isPokemonFavorite;
     }
   }
 
-  goBack(){
+  goBack() {
     window.history.back();
   }
 }

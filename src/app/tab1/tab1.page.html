@@ -3,8 +3,13 @@
     <ion-title>
       Pokédex
     </ion-title>
+    <ion-searchbar [(ngModel)]="searchTerm" (ionInput)="filterPokemons()" placeholder="Buscar Pokémon" debounce="300"
+    (ionClear)="resetSearch()">
+  </ion-searchbar>
+    
   </ion-toolbar>
 </ion-header>
+
 
 <ion-content [fullscreen]="true">
   <ion-header collapse="condense">
@@ -13,8 +18,9 @@
     </ion-toolbar>
   </ion-header>
 
+  
   <ion-list>
-    <ion-item *ngFor="let pokemon of pokemons" (click)="goToDetails(pokemon.name)">
+    <ion-item *ngFor="let pokemon of filteredPokemons" (click)="goToDetails(pokemon.name)">
       <ion-avatar slot="start">
         <img [src]="getPokemonImageUrl(pokemon.url)" alt="{{ pokemon.name }}">
       </ion-avatar>
@@ -24,10 +30,8 @@
     </ion-item>
   </ion-list>
 
-  <ion-infinite-scroll (ionInfinite)="loadMorePokemons($event)">
-    <ion-infinite-scroll-content
-      loadingSpinner="bubbles"
-      loadingText="Carregando mais Pokémons...">
+  <ion-infinite-scroll (ionInfinite)="loadMorePokemons($event)" [disabled]="isSearching || !canLoadMore">
+    <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Carregando mais Pokémons...">
     </ion-infinite-scroll-content>
   </ion-infinite-scroll>
 

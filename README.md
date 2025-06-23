@@ -41,10 +41,3 @@ Minha abordagem neste projeto foi focada na construção de um aplicativo modula
     `ionic serve`
     Isso abrirá o aplicativo em seu navegador padrão, geralmente em `http://localhost:8100/`.
 
----
-
-## **Demonstração (Opcional - Adicione imagens/GIFs aqui)**
-
-*(Você pode adicionar capturas de tela ou um GIF curto aqui para mostrar as funcionalidades em ação. Por exemplo, uma imagem da lista principal, uma da tela de detalhes, e uma da lista de favoritos.)*
-
----

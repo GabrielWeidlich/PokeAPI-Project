@@ -124,6 +124,28 @@ export class Tab1Page implements OnInit {
     this.cdr.detectChanges();
   }
 
+  searchPokemonByNameOrId() {
+  const trimmedTerm = this.searchTerm.trim().toLowerCase();
+
+  if (!trimmedTerm) {
+    console.log('Busca vazia');
+    return;
+  }
+
+  this.pokemonService.getPokemonDetails(trimmedTerm).subscribe({
+    next: (pokemon) => {
+      console.log('Pokémon encontrado:', pokemon);
+      // Aqui você pode navegar para a página de detalhes, exibir modal, ou mostrar na tela
+      this.router.navigate(['/tabs/tab1/details', trimmedTerm]);
+    },
+    error: (error) => {
+      console.error('Erro ao buscar Pokémon:', error);
+      // Aqui você pode mostrar um alerta informando que o Pokémon não foi encontrado
+    }
+  });
+}
+
+
   resetSearch() {
     this.searchTerm = '';
     this.isSearching = false;

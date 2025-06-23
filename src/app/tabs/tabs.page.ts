@@ -4,7 +4,7 @@ import { ExploreContainerComponent } from '../explore-container/explore-containe
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { IonTabs, IonTabBar, IonTabButton, IonIcon, IonLabel, IonRouterOutlet } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
-import { triangle, ellipse, heart, heartOutline } from 'ionicons/icons';
+import { triangle, ellipse, heart, heartOutline, search } from 'ionicons/icons';
 
 @Component({
   selector: 'app-tabs',
@@ -25,6 +25,6 @@ export class TabsPage {
   public environmentInjector = inject(EnvironmentInjector);
 
   constructor() {
-    addIcons({ triangle, ellipse, heart, heartOutline });
+    addIcons({ triangle, ellipse, heart, heartOutline, search });
   }
 }
